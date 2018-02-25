@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<style>
+	#bounce{
+		position: relative;
+		display: inline-block;
+		float: left;
+	}
+	span{
+		display: inline-block;
+	}
+	strong{
+		display: inline-block;
+		position: absolute;
+		top: 0px;
+	}
+	@keyframes mytop{
+		0% {
+			top:0;
+		}
+		100% {
+			top:-28px;
+		}
+	}
+</style>
+<body>
+	<div id="bounce">
+		<!-- 千位 -->
+		<!-- <span>
+			<strong>0123456789a</strong>
+		</span> -->
+		<!-- 百位 -->
+		<span>
+			<strong>0123456789a</strong>
+		</span>
+		<!-- 十位 -->
+		<span>
+			<strong>0123456789a</strong>
+		</span>
+		<!-- 个位 -->
+		<span>
+			<strong>0123456789a</strong>
+		</span>
+	</div>
+</body>
+<script>
+	// 获取元素
+	var bounce = document.getElementById('bounce');
+	var spans = bounce.getElementsByTagName('span');
+	var strongs = [];
+	var sTexts= [];
+	// 设置每个数字的位置（定位：left）
+	for (var i = 0; i < spans.length; i++) {
+		spans[i].children[0].style.left = i*15 + "px";
+			var strong = spans[i].children[0];
+			strongs.push(strong);
+	}
+	// 获取一个strong的内容
+	var numl = strongs[0].innerText;
+	// 所有数字的默认值都为0
+	strongs.map(function(n){
+		n.innerText = 0;
+	});
+	//根据strong的内容通过遍历length追加到新的数组中获取每一个数字即[0,1,2,3,4,5,6,7,8,9,a](a为0)
+	var arr = [];
+	for (var i = 0; i < numl.length; i++) {
+		var sText = numl[i];
+		arr.push(sText);
+	}
+	//执行动画效果，每个数字向上弹跳
+	function hq(obj,n,time){
+		var i = 0;
+		setTimeout(function(){
+			var timer = setInterval(function(){
+				obj.innerHTML = arr[i];
+				if(n =="a"){
+					n = 10;
+				}
+				obj.style.animation = "mytop 0.1s ease-out 0s "+n;
+				obj.style.top = 0;
+				i++;
+				if(obj.innerHTML == "a"){
+						obj.innerHTML = 0;
+						clearInterval(timer);
+				}else if(obj.innerHTML == n){
+						obj.innerHTML = n;
+						clearInterval(timer);
+				}
+			},100)
+		},time)
+	}
+	//第一个参数是计数单位，第二个参数是计数单位上的数字，第三个是间距的时间
+	//例子：500 即百位数5 十位数是a 个位数是a （a为0）弹跳十次
+	//间距的时间是通过每个数字弹跳时间为100毫秒计算，a就是十次也就是1000毫秒
+	hq(strongs[0],"5",2015);
+	hq(strongs[1],"a",1015);
+	hq(strongs[2],"a",15);
+
+	//换个例子数字为375
+	// hq(strongs[0],"3",1215);
+	// hq(strongs[1],"7",515);
+	// hq(strongs[2],"5",15);
+</script>
+</html>
